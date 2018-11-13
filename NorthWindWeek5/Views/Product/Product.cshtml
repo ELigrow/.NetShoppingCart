@@ -1,0 +1,53 @@
+﻿@using NorthWindWeek5.Models
+@model IEnumerable<Product>
+@{
+    ViewBag.Title = "Product";
+}
+
+<h2>Products by Category</h2>
+
+<table class="table table-hover table-responsive">
+    <thead>
+        <tr class="font-md">
+            <th>
+                @ViewBag.Filter
+            </th>
+            <th class="text-right">
+                Price
+            </th>
+            <th class="text-right">
+                Stock
+            </th>
+        </tr>
+    </thead>
+    @foreach(Product p in Model)
+    {
+    <tr class="product-row" data-id="@p.ProductID">
+        <td>
+            @p.ProductName - (@p.QuantityPerUnit)
+        </td>
+        <td class="text-right">
+            @string.Format("{0:c}", @p.UnitPrice)
+        </td>
+        <td class="text-right">
+            @p.UnitsInStock
+        </td>
+
+    </tr>
+    }
+</table>
+
+<div class="font-md">
+    <a href="~/Product/Category"><i class="fa fa-list"></i> Product Categories</a>
+</div>
+
+@section scripts
+{
+<script>
+    $(function () {
+        $('.product-row').on('click', function () {
+            alert($(this).data('id'));
+        });
+    })
+    </script>    
+}

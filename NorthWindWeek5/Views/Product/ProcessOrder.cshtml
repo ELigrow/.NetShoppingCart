@@ -1,0 +1,73 @@
+﻿@using NorthWindWeek5.Models;
+@{
+    ViewBag.Title = "ProcessForm";
+}
+
+<h2>Contact Form</h2>
+
+@*<h3>Thank you for shopping with Northwind, @ViewBag.Name!</h3>
+    <p>The below order will be shipped 5-10 business days after payment!</p>
+
+    <ul>
+        @{
+            List<Order> orders = new List<Order>();
+            double grandTotal = 0;
+            foreach (Order o in ViewBag.Orders)
+            {
+
+                grandTotal += (o.Qty * o.Prod.Price);
+                <li>@String.Format("{0} {1}", o.Qty, o.Prod.Name)</li>
+                orders.Add(o);
+            }
+
+
+
+        }
+    </ul>
+
+    <h3>Order Total: @grandTotal.ToString("c")</h3>
+
+    <h3>Shipping Information:</h3>
+    <p>@ViewBag.Name</p>
+    <p>@ViewBag.Address</p>
+    <p>@ViewBag.City, @ViewBag.State @ViewBag.Zip</p>*@
+
+<form action="~/Product/DisplayOrder" method="post">
+    <label for="name">Enter name:</label>
+    <input type="text" class="form-control" id="name" name="name" placeholder="Enter name here" />
+    <label for="address">Enter address:</label>
+    <input type="text" class="form-control" id="address" name="address" placeholder="Enter address here" />
+    <label for="city">Enter city:</label>
+    <input type="text" class="form-control" id="city" name="city" placeholder="Enter city here" />
+    <label for="state">Enter state:</label>
+    <input type="text" class="form-control" id="state" name="state" placeholder="Enter state here" />
+    <label for="zip">Enter Zip code:</label>
+    <input type="text" class="form-control" id="zip" name="zip" placeholder="Enter ZIP here" />
+
+    @{ 
+        double grandTotal = 0;
+        foreach (Order o in ViewBag.Orders)
+        {
+        <input type="hidden" name="prods" value="@o.Prod.Name" />
+        <input type="hidden" name="qty" value="@o.Qty" />
+                grandTotal += (o.Qty * o.Prod.Price);
+        }
+        <input type="hidden" name="total" value="@grandTotal" />
+        }
+    <button type="submit" class="btn btn-default">Submit</button>
+
+</form>
+
+<p></p>
+
+
+@section scripts
+{
+
+    <script>
+        $(function (e) {
+            //$('#orders').val();
+            //$('#total').val();
+        });
+    </script>
+}

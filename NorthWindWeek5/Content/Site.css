@@ -1,0 +1,67 @@
+﻿body, h1, h2, h3, h4, h5, h6 {
+    font-family: "Audiowide", sans-serif;
+    color: #666;
+}
+
+.jumbotron {
+    border: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.jumbotron h1 .fa-compass, #logo {
+    font-size: 70%;
+}
+
+.jumbotron h1 {
+    text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.7), 3px 3px 4px rgba(0, 0, 0, 0.6);
+}
+
+body {
+    padding-top: 70px;
+    padding-bottom: 20px;
+    font-size: 1.5em;
+}
+
+a:hover {
+    text-decoration:none;
+    color: #000;
+}
+
+a:active, a:hover, a:focus, a:visited{
+    outline:none;
+}
+
+.font-md{
+    font-size: 1.5em;
+}
+
+.font-lg{
+    font-size: 1.8em;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.hr-special {
+    margin: 8px;
+}
+
+a.special {
+    cursor: pointer;
+}

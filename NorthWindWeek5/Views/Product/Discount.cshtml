@@ -1,0 +1,29 @@
+﻿@using NorthWindWeek5.Models
+@model IEnumerable<Discount>
+@{
+    ViewBag.Title = "Discount";
+}
+
+<h2>Discount</h2>
+
+<div class="font-md">
+    <a href="~/Home/Index"><i class="fa fa-home"></i> Home</a>
+</div>
+
+<div class="list-group">
+    @foreach (Discount d in @Model)
+    {
+        <div class="list-group-item">
+            <h2 class="font-md">@d.Title</h2>
+            <hr class="hr-special" />
+            <p>
+                @d.Description
+            </p>
+            <p><i>Discount Expires: @string.Format("{0:MM/dd/yyyy}", @d.EndTime)</i></p>
+            <a class="special" data-container="body" data-toggle="popover" dataplacement="right"
+               data-content="@d.Code">
+                <i class="fa fa-hand-o-right"></i> Discount Code
+            </a>
+        </div>
+    }
+</div>

@@ -1,0 +1,44 @@
+﻿@using NorthWindWeek5.Models
+@model IEnumerable<Discount>
+@{
+    ViewBag.Title = "Home";
+}
+
+<div class="jumbotron">
+    <h1>N<i class="fa fa-compass"></i>rthwind</h1>
+    <p class="lead">
+        We have the best prices and selections of high quality foods &amp; beverages on the planet! Check out our featured discounts below.
+    </p>
+    <p>
+        <a href="~/Product/Unit2Project" class="btn btn-primary btn-lg">Place your order now &raquo;</a>
+    </p>
+</div>
+
+<div class="row">
+    @foreach (Discount d in @Model)
+    {
+        <div class="col-sm-4">
+            <h2 class="font-md">@d.Title</h2>
+            <hr class="hr-special" />
+            <p>
+                @d.Description
+            </p>
+            <p><i>Discount Expires: @string.Format("{0:MM/dd/yyyy}", @d.EndTime)</i></p>
+            <a class="special" data-container="body" data-toggle="popover" dataplacement="right"
+               data-content="@d.Code">
+                <i class="fa fa-hand-o-right"></i> Discount Code
+            </a>
+        </div>
+    }
+</div>
+<br />
+<h3><a href="~/Product/Discount"><i class="fa fa-tag"></i>See all discounts</a></h3>
+
+@section scripts
+{
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover();
+        });
+    </script>
+}

@@ -1,0 +1,58 @@
+﻿@using NorthWindWeek5.Models
+@model IEnumerable<Product>
+@{
+    ViewBag.Title = "SearchResult";
+}
+
+<h2>Products by Category</h2>
+
+<div id="alert-search" class="alert alert-info alert-dismissable fade in"
+     style="position:fixed;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong id="alert-search-msg">Your request produced @Model.Count() results</strong>
+</div>
+
+<table class="table table-hover table-responsive">
+    <thead>
+        <tr class="font-md">
+            <th>
+                @ViewBag.Filter
+            </th>
+            <th class="text-right">
+                Price
+            </th>
+            <th class="text-right">
+                Stock
+            </th>
+        </tr>
+    </thead>
+    @foreach (Product p in Model)
+    {
+        <tr class="product-row" data-id="@p.ProductID">
+            <td>
+                @p.ProductName - (@p.QuantityPerUnit)
+            </td>
+            <td class="text-right">
+                @string.Format("{0:c}", @p.UnitPrice)
+            </td>
+            <td class="text-right">
+                @p.UnitsInStock
+            </td>
+
+        </tr>
+    }
+</table>
+
+<div class="font-md">
+    <a href="~/Product/Search"><i class="fa fa-search"></i> Search</a>
+</div>
+
+@section scripts
+{
+    <script>
+        setTimeout(function () { $('.alert').fadeOut(); }, 3000);
+    </script>
+
+}
