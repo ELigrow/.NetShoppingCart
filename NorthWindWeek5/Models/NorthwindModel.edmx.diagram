@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8946e3f001fe4c489ddb39d5e82b1561" Name="Diagram1">
+      <Diagram DiagramId="8946e3f001fe4c489ddb39d5e82b1561" Name="Diagram1" ZoomLevel="95">
         <EntityTypeShape EntityType="NorthwindModel.Category" Width="1.5" PointX="0.75" PointY="17.5" IsExpanded="true" />
         <EntityTypeShape EntityType="NorthwindModel.Customer" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="NorthwindModel.Employee" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
@@ -27,6 +27,9 @@
         <AssociationConnector Association="NorthwindModel.EmployeeTerritories" ManuallyRouted="false" />
         <EntityTypeShape EntityType="NorthwindModel.Discount" Width="1.5" PointX="5.25" PointY="19.25" />
         <AssociationConnector Association="NorthwindModel.FK_Specials_Products" />
+        <EntityTypeShape EntityType="NorthwindModel.Cart" Width="1.5" PointX="5.25" PointY="10.875" />
+        <AssociationConnector Association="NorthwindModel.FK_Cart_Customers" />
+        <AssociationConnector Association="NorthwindModel.FK_Cart_Products" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

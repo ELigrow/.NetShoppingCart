@@ -3,11 +3,24 @@
     ViewBag.Title = "Search";
 }
 
-<h2>Search</h2>
+<div class="font-md">Product Search</div>
+<div class="well">
+    <form method="post" action="/Product/SearchResult" class="form-horizontal">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label for="SearchString" class="control-label col-md-2">Product Name</label>
+            <div class="col-md-10">
+                <input type="text" name="SearchString" id="SearchString" class="form-control" placeholder="Enter part or all of the product name" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-default">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
 
-<form action="~/Product/SearchResult" method="post" id="form">
-    <label for="search">Enter Search Term:</label>
-    <input type="text" name="search" id="search" required/>
-
-    <button type="submit" id="submit">Submit</button>
-</form>
+<div class="font-md">
+    <a href="~/Home/Index"><i class="fa fa-home"></i> Home</a>
+</div>

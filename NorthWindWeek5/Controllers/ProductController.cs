@@ -111,6 +111,7 @@ namespace NorthWindWeek5.Controllers
 
         public ActionResult Product(int? id)
         {
+            ViewBag.id = id;
                 if (id == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -132,15 +133,17 @@ namespace NorthWindWeek5.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SearchResult(FormCollection Form)
         {
-            string search = Form["search"];
-            if(search != null)
+            string SearchString = Form["SearchString"];
+            ViewBag.Filter = "Product";
+            ViewBag.SearchString = SearchString;
+            if(SearchString != null)
             {
                 using (NorthwindEntities db = new NorthwindEntities())
                 {
-                    return View(db.Products.Where(p => p.ProductName.Contains(search))
-                        .OrderBy(p => p.ProductName).ToList());
+                    return View("Product", db.Products.Where(p => p.ProductName.Contains(SearchString) && p.Discontinued == false).OrderBy(p => p.ProductName).ToList());
                 }
             }
             else
@@ -148,5 +151,34 @@ namespace NorthWindWeek5.Controllers
                 return View();
             }
         }
+
+        public JsonResult FilterProducts(int? id, string SearchString, decimal? PriceFilter)
+        {
+            using (NorthwindEntities db = new NorthwindEntities())
+            {
+                if (PriceFilter == null) {
+                    Response.StatusCode = 400;
+                    return Json(new { }, JsonRequestBehavior.AllowGet);
+                }
+                var Products = db.Products.Where(p => p.Discontinued == false).ToList();
+                if (id != null)
+                {
+                    Products = Products.Where(p => p.CategoryID == id).ToList();
+                }
+                if (!String.IsNullOrEmpty(SearchString))
+                {
+                    Products = Products.Where(p => p.ProductName.Contains(SearchString)).ToList();
+                }
+                var ProductDTOs = Products.Where(p => p.UnitPrice >= PriceFilter).Select(p =>
+                new {
+                    p.ProductID,
+                    p.ProductName,
+                    p.QuantityPerUnit,
+                    p.UnitPrice,
+                    p.UnitsInStock
+                }).OrderBy(p => p.ProductName).ToList();
+                return Json(ProductDTOs, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

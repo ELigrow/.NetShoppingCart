@@ -36,5 +36,6 @@ namespace NorthWindWeek5.Models
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<Territory> Territories { get; set; }
         public virtual DbSet<Discount> Discounts { get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
     }
 }
