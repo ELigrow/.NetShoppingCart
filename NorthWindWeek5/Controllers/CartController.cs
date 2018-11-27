@@ -50,5 +50,11 @@ namespace NorthWindWeek5.Controllers
             }
             return Json(sc, JsonRequestBehavior.AllowGet);
         }
+
+        [Authorize]
+        public ActionResult Cart()
+        {
+            return View();           
+        }
     }
 }

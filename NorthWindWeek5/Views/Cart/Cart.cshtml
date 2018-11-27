@@ -1,0 +1,60 @@
+﻿@using NorthWindWeek5.Models
+@using System.Data.Entity
+@using NorthWindWeek5.Security
+@{
+    ViewBag.Title = "Cart";
+    ViewBag.Total = 0.00;
+}
+
+<h2>My Cart</h2>
+
+<table class="table table-hover table-responsive">
+    <thead>
+        <tr>
+            <th class="font-md">Product</th>
+            <th class="text-right">Quantity</th>
+            <th class="text-right">Price</th>
+        </tr>
+    </thead>
+    <!--Jason: This is where the products foreach loop should be run-->
+    <tbody>
+        @{ 
+            using (NorthwindEntities db = new NorthwindEntities())
+            {
+                var id = UserAccount.GetUserId();
+                var results = db.Carts
+                    .Where(c => c.CustomerID == id)
+                    .ToList();
+
+                foreach (Cart c in results)
+                {
+                    var name = db.Products
+                        .Where(p => p.ProductID == c.ProductID)
+                        .Select(p => p.ProductName).FirstOrDefault() ;
+
+                    var price = (db.Products
+                        .Where(p => p.ProductID == c.ProductID)
+                        .Select(p => p.UnitPrice)
+                        .FirstOrDefault() * Convert.ToDecimal(c.Quantity))
+                        .ToString();
+
+                    ViewBag.Total += Convert.ToDouble(price);
+
+                    <tr>
+                        <td>@name</td>
+                        <td class="text-right">@c.Quantity</td>
+                        <td class="text-right">$@price.Substring(0, price.Length - 2)</td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td></td>
+            <td class="text-right font-md">Total:</td>
+            <!--This is where the total is generated-->
+            <td class="text-right font-md">$@ViewBag.Total</td>
+        </tr>
+    </tfoot>
+</table>

@@ -21,5 +21,12 @@ namespace NorthWindWeek5.Models
     
         public virtual Customer Customer { get; set; }
         public virtual Product Product { get; set; }
+
+        
+        public string toString()
+        {
+            string s = "Product=" + ProductID + "-Customer=" + CustomerID + "-Quantity=" + Quantity;
+            return s;
+        }
     }
 }

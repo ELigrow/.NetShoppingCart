@@ -303,10 +303,10 @@
     <Content Include="Views\Product\Search.cshtml" />
     <Content Include="Views\Product\SearchResult.cshtml" />
     <Content Include="Views\Home\SignedOut.cshtml" />
+    <Content Include="Views\Cart\Cart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Cart\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
