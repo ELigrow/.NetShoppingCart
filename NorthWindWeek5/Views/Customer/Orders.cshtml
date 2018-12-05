@@ -1,0 +1,55 @@
+﻿@using NorthWindWeek5.Models
+@using System.Data.Entity
+@using NorthWindWeek5.Security
+@{
+    ViewBag.Title = "Orders";
+}
+
+<h2>Recent Orders</h2>
+
+
+
+@{
+    using (NorthwindEntities db = new NorthwindEntities())
+    {
+
+        var id = UserAccount.GetUserId();
+        var orders = db.Orders.Where(o => o.CustomerID == id);
+
+        foreach(Order o in orders)
+        {
+            var od = db.Order_Details.Where(d => d.OrderID == o.OrderID);
+            <table class="table table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <th>Order: @o.OrderID</th>
+                    </tr>
+                    <tr>
+                        <th class="font-md">Product</th>
+                        <th class="text-right">Quantity</th>
+                        <th class="text-right">Price</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    @foreach(Order_Detail order in od){
+                        var name = db.Products
+                            .Where(p => p.ProductID == order.ProductID)
+                            .Select(p => p.ProductName).FirstOrDefault();
+                        var price = order.UnitPrice * order.Quantity;
+                    <tr>
+                        
+                        <td>@name</td>
+                        <td class="text-right">@order.Quantity</td>
+                        <td class="text-right">$@Math.Round(price, 2)</td>
+
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+            
+        }
+    }
+}
+

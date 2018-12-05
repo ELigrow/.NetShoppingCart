@@ -7,7 +7,7 @@
 <div class="well">
     <form method="post" class="form-horizontal">
         @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" });
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.CompanyName, htmlAttributes: new
                 { @class = "control-label col-md-2" })

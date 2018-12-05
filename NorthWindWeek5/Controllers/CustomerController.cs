@@ -169,5 +169,10 @@ namespace NorthWindWeek5.Controllers
 
             }
         }
+
+        public ActionResult Orders()
+        {
+            return View();
+        }
     }
 }

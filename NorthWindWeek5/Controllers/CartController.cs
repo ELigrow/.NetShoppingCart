@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using NorthWindWeek5.Models;
+using NorthWindWeek5.Security;
 
 namespace NorthWindWeek5.Controllers
 {
@@ -55,6 +56,63 @@ namespace NorthWindWeek5.Controllers
         public ActionResult Cart()
         {
             return View();           
+        }
+
+        public ActionResult CheckOut()
+        {
+            using (NorthwindEntities db = new NorthwindEntities())
+            {
+                //Database calls go here
+                var id = UserAccount.GetUserId();
+
+                Order o = new Order();
+
+                var carts = db.Carts.Where( c => c.CustomerID == id);
+
+                var userInfo = db.Customers.Where(c => c.CustomerID == id).FirstOrDefault();
+
+                o.CustomerID = userInfo.CustomerID;
+                o.OrderDate = DateTime.Now;
+                o.ShipAddress = userInfo.Address;
+                o.ShipName = userInfo.CompanyName;
+                o.ShipCity = userInfo.City;
+                o.ShipRegion = userInfo.Region;
+                o.ShipPostalCode = userInfo.PostalCode;
+                o.ShipCountry = userInfo.Country;
+
+                db.Orders.Add(o);
+
+                db.SaveChanges();
+
+                var orderID = o.OrderID;
+
+                foreach (Cart c in carts)
+                {
+                    Order_Detail od = new Order_Detail();
+                    od.OrderID = orderID;
+                    od.ProductID = Convert.ToInt32(c.ProductID);
+                    var price = db.Products
+                        .Where(p => p.ProductID == c.ProductID)
+                        .Select(p => p.UnitPrice)
+                        .FirstOrDefault();
+                    od.UnitPrice = Convert.ToDecimal(price);
+                    od.Discount = 0;
+                    od.Quantity = Convert.ToInt16(c.Quantity);
+
+                    db.Order_Details.Add(od);
+
+                    db.Carts.Remove(c);
+                }
+
+                db.SaveChanges();
+
+            }
+            return RedirectToAction(actionName: "Purchased", controllerName: "Cart");
+        }
+
+        public ActionResult Purchased()
+        {
+            return View();
         }
     }
 }
