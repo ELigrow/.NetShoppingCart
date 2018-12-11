@@ -14,7 +14,8 @@
     {
 
         var id = UserAccount.GetUserId();
-        var orders = db.Orders.Where(o => o.CustomerID == id);
+        var lastYear = DateTime.Today.AddYears(-1);
+        var orders = db.Orders.Where(o => o.CustomerID == id && o.OrderDate > lastYear);
 
         foreach(Order o in orders)
         {

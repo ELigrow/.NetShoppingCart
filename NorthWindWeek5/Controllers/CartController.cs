@@ -181,5 +181,24 @@ namespace NorthWindWeek5.Controllers
         {
             return View();
         }
+
+        public JsonResult Remove(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                Response.StatusCode = 400;
+                return Json(new { }, JsonRequestBehavior.AllowGet);
+            }
+            Cart sc;
+            using (NorthwindEntities db = new NorthwindEntities())
+            {
+                sc = db.Carts.Where(c => c.CartID == id).FirstOrDefault();
+
+                db.Carts.Remove(sc);
+
+                db.SaveChanges();
+            }
+            return Json(new { }, JsonRequestBehavior.AllowGet);
+        }
     }
 }
