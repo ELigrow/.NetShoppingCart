@@ -18,15 +18,9 @@ namespace NorthWindWeek5.Models
         public Nullable<int> ProductID { get; set; }
         public Nullable<int> CustomerID { get; set; }
         public Nullable<int> Quantity { get; set; }
+        public Nullable<int> Discount { get; set; }
     
         public virtual Customer Customer { get; set; }
         public virtual Product Product { get; set; }
-
-        
-        public string toString()
-        {
-            string s = "Product=" + ProductID + "-Customer=" + CustomerID + "-Quantity=" + Quantity;
-            return s;
-        }
     }
 }

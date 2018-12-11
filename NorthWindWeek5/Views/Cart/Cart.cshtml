@@ -1,13 +1,12 @@
-﻿@using NorthWindWeek5.Models
-@using System.Data.Entity
+﻿@using System.Data.Entity
 @using NorthWindWeek5.Security
+@using NorthWindWeek5.Models
 @{
     ViewBag.Title = "Cart";
     ViewBag.Total = (decimal)0.00;
+    ViewBag.Code = "";
 }
-
 <h2>My Cart</h2>
-
 <table id="orderTable" class="table table-hover table-responsive">
     @{
         using (NorthwindEntities db = new NorthwindEntities())
@@ -27,27 +26,25 @@
                     </tr>
                 </thead>
                 <tbody>
-
-
                     @foreach (Cart c in results)
                     {
-                    var name = db.Products
-                    .Where(p => p.ProductID == c.ProductID)
-                    .Select(p => p.ProductName).FirstOrDefault();
+                        var name = db.Products
+                        .Where(p => p.ProductID == c.ProductID)
+                        .Select(p => p.ProductName).FirstOrDefault();
 
-                    var price = (db.Products
-                    .Where(p => p.ProductID == c.ProductID)
-                    .Select(p => p.UnitPrice)
-                    .FirstOrDefault() * Convert.ToDecimal(c.Quantity))
-                    .ToString();
+                        var price = (db.Products
+                        .Where(p => p.ProductID == c.ProductID)
+                        .Select(p => p.UnitPrice)
+                        .FirstOrDefault() * Convert.ToDecimal(c.Quantity))
+                        .ToString();
 
-                    ViewBag.Total += Convert.ToDecimal(price);
+                        ViewBag.Total += Convert.ToDecimal(price);
 
-                    <tr>
-                        <td>@name</td>
-                        <td class="text-right">@c.Quantity</td>
-                        <td class="text-right">$@price.Substring(0, price.Length - 2)</td>
-                    </tr>
+                        <tr id="numberProducts">
+                            <td>@name</td>
+                            <td class="text-right">@c.Quantity</td>
+                            <td class="text-right">$@price.Substring(0, price.Length - 2)</td>
+                        </tr>
                     }
                 </tbody>
                 <tfoot>
@@ -55,16 +52,72 @@
                         <td></td>
                         <td class="text-right font-md">Total:</td>
                         <!--This is where the total is generated-->
-                        <td class="text-right font-md">$@Math.Round(ViewBag.Total, 2)</td>
+                        <td class="text-right font-md" id="orderTotal">$@Math.Round(ViewBag.Total, 2)</td>
+                    </tr>
+                    @{
+                        foreach (Cart c in results)
+                        {
+                            var name = db.Products
+                       .Where(p => p.ProductID == c.ProductID)
+                       .Select(p => p.ProductName).FirstOrDefault();
+
+                            var code = db.Discounts
+                                   .Where(d => d.ProductID == c.ProductID)
+                                   .Select(d => d.Code).FirstOrDefault().ToString();
+
+                            ViewBag.code = code;
+
+                            var discountPercent = db.Discounts
+                           .Where(d => d.ProductID == c.ProductID)
+                           .Select(d => d.DiscountPercent).FirstOrDefault();
+
+                            var price = Convert.ToDecimal((db.Products
+                            .Where(p => p.ProductID == c.ProductID)
+                            .Select(p => p.UnitPrice)
+                            .FirstOrDefault()) * Convert.ToDecimal(c.Quantity));
+
+                            var discount = Convert.ToDecimal(price - (price * discountPercent));
+
+                            ViewBag.Total -= discount;
+
+                            <tr id="discountRow">
+                                <!--This is where the discount is displayed-->
+                                <td class="text-left">Discount:</td>
+                                <td class="text-left">@name</td>
+                                <td class="text-right" id="productDiscount">
+                                    $@Math.Round(discount, 2)
+                                </td>
+                            </tr>
+
+
+                        }
+
+                    }
+                    @*Display new grand total*@
+                    <tr>
+                        <td></td>
+                        <td class="font-md text-right">Updated Total</td>
+                        <td class="text-right font-md">$@Math.Round(@ViewBag.Total, 2)</td>
+                    </tr>
+
+                    @* Coupon code text box and apply button *@
+                    <tr>
+                        <td>
+                            <input type="text" name="DiscountCode" placeholder="Discount Code" id="discountCode" />
+                            <input type="submit" value="Apply" id="submitCode" />
+                        </td>
                     </tr>
                 </tfoot>
-                }
+            }
+            else
+            {
+                <tr>Your cart is empty!</tr>
             }
         }
-            </table>
 
+    }
+</table>
 <div id="empty"></div>
-
 <nav id="nav-footer" class="navbar-default navbar-fixed-bottom">
     <form action="~/Cart/CheckOut">
         <button type="submit" class="btn btn-info pull-right" style="margin-right: 3em">
@@ -73,17 +126,32 @@
         </button>
     </form>
 
-
 </nav>
-
 @section scripts{
     <script>
         $(function () {
 
-            if ($('#orderTable').length < 2) {
-                $('#nav-footer').hide();
-                $('#empty').html('Your cart is empty!');
-            }
+            //working with discount codes
+            var ProductID;
+            $('#submitCode').click(function () {
+
+                var codeInput = $('#discountCode').val();
+                var codeActual = '@(ViewBag.code)';
+
+
+                console.log(codeInput + " input");
+                console.log(codeActual + " actual");
+
+                if (codeInput == codeActual) {
+
+                    $('#discountRow').removeClass('hidden');
+                    console.log("true");
+                }
+                else console.log("false");
+
+            });
+
+
 
         });
     </script>

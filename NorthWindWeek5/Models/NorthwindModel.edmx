@@ -13,6 +13,7 @@
           <Property Name="ProductID" Type="int" />
           <Property Name="CustomerID" Type="int" />
           <Property Name="Quantity" Type="int" />
+          <Property Name="Discount" Type="int" />
         </EntityType>
         <EntityType Name="Categories">
           <Key>
@@ -777,6 +778,7 @@
           <Property Name="Quantity" Type="Int32" />
           <NavigationProperty Name="Customer" Relationship="NorthwindModel.FK_Cart_Customers" FromRole="Cart" ToRole="Customer" />
           <NavigationProperty Name="Product" Relationship="NorthwindModel.FK_Cart_Products" FromRole="Cart" ToRole="Product" />
+          <Property Name="Discount" Type="Int32" />
         </EntityType>
         <Association Name="FK_Cart_Customers">
           <End Type="NorthwindModel.Customer" Role="Customer" Multiplicity="0..1" />
@@ -973,6 +975,7 @@
           <EntitySetMapping Name="Carts">
             <EntityTypeMapping TypeName="NorthwindModel.Cart">
               <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />

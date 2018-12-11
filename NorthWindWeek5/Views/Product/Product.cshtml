@@ -1,4 +1,5 @@
 ﻿@using NorthWindWeek5.Models
+@using System.Data.Entity
 @model IEnumerable<Product>
 @{
     ViewBag.Title = "Product";
@@ -80,6 +81,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+                
                 <button type="button" class="btn btn-danger" data-dismiss="modal">
                     Cancel
                 </button>
@@ -105,6 +107,7 @@
     <script>
         $(function () {
             var ProductID;
+
             showModelCount(@Model.Count())
             $('#up, #down').click(function () {
                 var minPrice = parseInt($('#minPrice').html()) + parseInt($(this).data("val"));
@@ -155,8 +158,10 @@
                         position: { x: 'left', y: 'top' },
                         offset: { x: 40, y: 60 },
                         preloadAudio: '@Url.Content("~")Content/jBox/blop',
-                        audio: '@Url.Content("~")Content/jBox/blop',
-                    });
+                        audio: '@Url.Content("~")Content/jBox/blop',
+
+                    });
+
                 } else {
                     // show modal window
                     ProductID = this.id;
@@ -199,11 +204,14 @@
                 loadingNotice.open();
 
                 var URL = "@Url.Content("~")Cart/AddToCart";
+                var DiscountCode = $('#discountCode').val();
+                var results;
 
                 $.post(URL, {
-                    ProductID: ProductID, CustomerID: @CustomerID, Quantity:
+ProductID: ProductID, CustomerID: @CustomerID, Quantity:
                         $('#Quantity').val()
-                })
+
+                }, DiscountCode)
                     .always(function (data, textStatus, statusObject) {
                         loadingNotice.close();
                         if (statusObject.status == 200) {
@@ -215,12 +223,13 @@
                                 closeOnEsc: true,
                                 target: $('#' + ProductID),
                                 position: { x: 'left', y: 65 }
-                            });
-                        } else {
-                            console.log("Http response code: " + data.status);
-                            console.log("Http response: " + data.statusText);
-                        }
-                    });
+                        });
+                    } else {
+                        console.log("Http response code: " + data.status);
+                        console.log("Http response: " + data.statusText);
+                    }
+
+                });
 
             });
 
